@@ -59,17 +59,31 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Default to PCAN-USB Pro FD so the USB descriptor, endpoint layout and
 # protocol source match what PEAK drivers/PCAN-View expect.
 option(PCAN_CAN_FD_MODE "Enable CAN-FD mode (vs Classic CAN)" ON)
+option(PCAN_DISCO_H745 "Build for STM32H745I-DISCO Board" OFF)
 
 # Add project symbols (macros)
-target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
-    USE_CPP_LOGGER
-    STM32H743XX
-    # CAN mode configuration
-    $<$<BOOL:${PCAN_CAN_FD_MODE}>:PCAN_PRO_FD>
-    $<$<BOOL:${PCAN_CAN_FD_MODE}>:PCAN_CAN_FD_ENABLED=1>
-    $<$<NOT:$<BOOL:${PCAN_CAN_FD_MODE}>>:PCAN_PRO>
-    $<$<NOT:$<BOOL:${PCAN_CAN_FD_MODE}>>:PCAN_CLASSIC_MODE=1>
-)
+if(PCAN_DISCO_H745)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
+        USE_CPP_LOGGER
+        STM32H745xx
+        DISCO_H745
+        # CAN mode configuration
+        $<$<BOOL:${PCAN_CAN_FD_MODE}>:PCAN_PRO_FD>
+        $<$<BOOL:${PCAN_CAN_FD_MODE}>:PCAN_CAN_FD_ENABLED=1>
+        $<$<NOT:$<BOOL:${PCAN_CAN_FD_MODE}>>:PCAN_PRO>
+        $<$<NOT:$<BOOL:${PCAN_CAN_FD_MODE}>>:PCAN_CLASSIC_MODE=1>
+    )
+else()
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
+        USE_CPP_LOGGER
+        STM32H743XX
+        # CAN mode configuration
+        $<$<BOOL:${PCAN_CAN_FD_MODE}>:PCAN_PRO_FD>
+        $<$<BOOL:${PCAN_CAN_FD_MODE}>:PCAN_CAN_FD_ENABLED=1>
+        $<$<NOT:$<BOOL:${PCAN_CAN_FD_MODE}>>:PCAN_PRO>
+        $<$<NOT:$<BOOL:${PCAN_CAN_FD_MODE}>>:PCAN_CLASSIC_MODE=1>
+    )
+endif()
 
 # Remove wrong libob.a library dependency when using cpp files
 list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)

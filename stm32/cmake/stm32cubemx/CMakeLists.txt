@@ -2,12 +2,21 @@ cmake_minimum_required(VERSION 3.22)
 # Enable CMake support for ASM and C languages
 enable_language(C ASM)
 # STM32CubeMX generated symbols (macros)
-set(MX_Defines_Syms
-    USE_PWR_LDO_SUPPLY
-    USE_HAL_DRIVER
-    STM32H743xx
-    $<$<CONFIG:Debug>:DEBUG>
-)
+if(PCAN_DISCO_H745)
+    set(MX_Defines_Syms
+        USE_PWR_LDO_SUPPLY
+        USE_HAL_DRIVER
+        STM32H745xx
+        $<$<CONFIG:Debug>:DEBUG>
+    )
+else()
+    set(MX_Defines_Syms
+        USE_PWR_LDO_SUPPLY
+        USE_HAL_DRIVER
+        STM32H743xx
+        $<$<CONFIG:Debug>:DEBUG>
+    )
+endif()
 
 # STM32CubeMX generated include paths
 set(MX_Include_Dirs
