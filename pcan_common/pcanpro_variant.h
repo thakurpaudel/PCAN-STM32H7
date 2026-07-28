@@ -113,6 +113,43 @@
 /* Hardware initialization */
 #define IO_HW_INIT()
 
+#elif (defined DISCO_H745)
+
+/* LED Mapping for STM32H745I-DISCO */
+// LED1 is Green LED (LD7), connected to PJ2.
+// LED2 is Red LED (LD6), connected to PI13.
+// Active Low: 0 = ON, 1 = OFF
+#define LED_ON  GPIO_PIN_RESET
+#define LED_OFF GPIO_PIN_SET
+
+#define LED_STAT_PORT GPIOJ
+#define LED_STAT_PIN  GPIO_PIN_2
+
+// Map Channel 0 and 1 activity to Red LED (LD6 / PI13)
+#define LED_CH0_TX_PORT GPIOI
+#define LED_CH0_TX_PIN  GPIO_PIN_13
+#define LED_CH0_RX_PORT GPIOI
+#define LED_CH0_RX_PIN  GPIO_PIN_13
+
+#define LED_CH1_TX_PORT GPIOI
+#define LED_CH1_TX_PIN  GPIO_PIN_13
+#define LED_CH1_RX_PORT GPIOI
+#define LED_CH1_RX_PIN  GPIO_PIN_13
+
+/* Enable GPIOI and GPIOJ clocks and initialize pins as output */
+#define IO_HW_INIT() do { \
+  __HAL_RCC_GPIOI_CLK_ENABLE(); \
+  __HAL_RCC_GPIOJ_CLK_ENABLE(); \
+  GPIO_InitTypeDef GPIO_InitStruct = {0}; \
+  GPIO_InitStruct.Pin = GPIO_PIN_2; \
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP; \
+  GPIO_InitStruct.Pull = GPIO_NOPULL; \
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW; \
+  HAL_GPIO_Init(GPIOJ, &GPIO_InitStruct); \
+  GPIO_InitStruct.Pin = GPIO_PIN_13; \
+  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct); \
+} while(0)
+
 #elif (defined EMPTY_STUB)
 /* Empty stub for testing without hardware */
 #define IO_HW_INIT()

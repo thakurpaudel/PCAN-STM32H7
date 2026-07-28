@@ -520,11 +520,13 @@ void pcan_protocol_process_data(uint8_t ep, uint8_t *ptr, uint16_t size) {
   int buffer_ep = (ep == PCAN_USB_EP_CMDOUT) ? PCAN_USB_BUFFER_CMD : PCAN_USB_BUFFER_DATA;
   uint32_t num_recs = *m.u.rec_counter_read;
 
+  size -= 4; // Account for the 4-byte header
+
   for (uint32_t r = 0; r < num_recs; r++) {
     union pcan_usbpro_rec *prec = (void *)rec_ptr;
     int rec_size = pcan_usbpro_sizeof_rec(prec->data_type);
 
-    if (rec_size < 0 || size < (rec_size + 1)) return; 
+    if (rec_size < 0 || size < rec_size) return; 
 
     switch (prec->data_type) {
     case DATA_TYPE_USB2CAN_STRUCT_CANMSG_TX_8:
