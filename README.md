@@ -75,16 +75,21 @@ PCAN/
    cd stm32
    ```
 2. Configure with CMake:
-   ```bash
-   cmake -B build/Debug -DPCAN_CAN_FD_MODE=ON
-   ```
+   * **For STM32H743 (Nucleo):**
+     ```bash
+     cmake -B build -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake -DPCAN_DISCO_H745=OFF
+     ```
+   * **For STM32H745 (Discovery):**
+     ```bash
+     cmake -B build -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake -DPCAN_DISCO_H745=ON
+     ```
 3. Compile:
    ```bash
-   cmake --build build/Debug -j$(nproc)
+   cmake --build build -j$(nproc)
    ```
 4. Flash using STM32CubeProgrammer or OpenOCD:
    ```bash
-   openocd -f interface/stlink.cfg -f target/stm32h7x.cfg -c "program build/Debug/PCAN.elf verify reset exit"
+   openocd -f interface/stlink.cfg -f target/stm32h7x.cfg -c "program build/PCAN.elf verify reset exit"
    ```
 
 ### Building for ESP32-S3
