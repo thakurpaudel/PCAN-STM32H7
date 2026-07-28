@@ -45,6 +45,16 @@ PCAN/
 | **LED 2** | `PE2` | Activity Indicator (Channel 2) |
 | **Debug** | `PA9` (TX), `PA10` (RX) | USART1 for printf logs (115200 8N1) |
 
+### STM32H745I-DISCO (Discovery Board)
+| Feature | Pin | Description |
+| :--- | :--- | :--- |
+| **USB** | `PA11` (DM), `PA12` (DP) | USB OTG FS (USB_FS2 connector) |
+| **CAN1** | `PH14` (RX), `PH13` (TX) | FDCAN1 Interface (routes to U22 Transceiver) |
+| **CAN2** | `PB5` (RX), `PB13` (TX) | FDCAN2 Interface (routes to U21 Transceiver) |
+| **LED 1** | `PJ2` (Green, LD7) | Status / USB Link Indicator (Active Low) |
+| **LED 2** | `PI13` (Red, LD6) | CAN Activity Indicator (Active Low) |
+| **Debug** | `PA9` (TX), `PA10` (RX) | USART1 for printf logs (115200 8N1) |
+
 ### ESP32-S3
 *Note: Pin mappings for ESP32-S3 can be configured dynamically via `idf.py menuconfig` under the PCAN settings menu.*
 | Feature | Default Pin | Description |
